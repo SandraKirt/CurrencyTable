@@ -10,14 +10,14 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Document doc = Jsoup.connect("https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html").get();
-        Map<String, Currency> currencyTable = loadCurrencies(doc);
+        Map<String, Currency> currencyTable = loadCurrencies();
         for (String key: currencyTable.keySet()) {
             System.out.println(key  + " - " + currencyTable.get(key).getName() + " - " + currencyTable.get(key).getPrice());
         }
     }
 
-    private static Map<String, Currency> loadCurrencies(Document doc) {
+    private static Map<String, Currency> loadCurrencies() throws IOException {
+        Document doc = Jsoup.connect("https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html").get();
         Map <String,Currency> currency = new HashMap<String, Currency>();
         for (int i = 0; i < doc.select("td.currency").size(); i++) {
             Currency currencyLine = new Currency();
